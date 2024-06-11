@@ -14,7 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,25 +25,30 @@ public class Product {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "product_id", unique = true)
+	private Long productId;
 	
-	@Column(name = "name", unique = true)
+	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "country")
-	private String country;
+	@Column(name = "price")
+	private double price ;
 	
-	@Column(name = "description")
-	private String description;
+	@Column(name = "rating")
+	private Long rating;
+
+	@Column(name = "category_id")
+	private Long categoryId;
 	
-	@Column(name = "visible")
-	private Boolean visible;
+	@Column(name = "images")
+	private String images;
 
 	public void update(ProductDto productDto) {
 		this.name = productDto.getName();
-		this.country = productDto.getCountry();
-		this.description = productDto.getDescription();
-		this.visible = productDto.getVisible();
+		this.price = productDto.getPrice();
+		this.rating = productDto.getRating();
+		this.categoryId = productDto.getCategoryId();
+		this.images = productDto.getImages();
 	}
 
 }

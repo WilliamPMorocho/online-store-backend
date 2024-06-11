@@ -10,9 +10,11 @@ import lombok.*;
 @ToString
 public class ProductDto {
 	
+	private Long productId;
 	private String name;
-	private String country;
-	private String description;
-	private Boolean visible;
+	private double price;
+	private Long rating;
+	private Long categoryId;
+	private String images;
 
 }
