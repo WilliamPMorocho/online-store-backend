@@ -1,10 +1,20 @@
 package com.unir.products.model.pojo;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Table(name = "product")
+@Table(name = "platform_user")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,30 +25,20 @@ public class PlataformUser {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_id", unique = true)
-	private Long productId;
+	@Column(name = "user_id", unique = true)
+	private long userId;
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "rol_id")
+	private int rolId;
 	
-	@Column(name = "price")
-	private double price ;
-	
-	@Column(name = "rating")
-	private Long rating;
+	@Column(name = "password")
+	private String password ;
 
-	@Column(name = "category_id")
-	private Long categoryId;
-	
-	@Column(name = "images")
-	private String images;
 
-	public void update(ProductDto productDto) {
-		this.name = productDto.getName();
-		this.price = productDto.getPrice();
-		this.rating = productDto.getRating();
-		this.categoryId = productDto.getCategoryId();
-		this.images = productDto.getImages();
+	public void update(PlataformUserDto plataformUserDto) {
+		this.userId = plataformUserDto.getUserId();
+		this.rolId = plataformUserDto.getRolId();
+		this.password = plataformUserDto.getPassword();
 	}
 
 }

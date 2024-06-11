@@ -9,12 +9,9 @@ import lombok.*;
 @Builder
 @ToString
 public class PlataformUserDto {
-	
-	private Long productId;
-	private String name;
-	private double price;
-	private Long rating;
-	private Long categoryId;
-	private String images;
+
+	private long userId;
+	private int rolId;
+	private String password ;
 
 }

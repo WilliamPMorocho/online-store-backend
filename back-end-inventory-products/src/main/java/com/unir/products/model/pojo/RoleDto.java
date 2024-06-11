@@ -9,12 +9,7 @@ import lombok.*;
 @Builder
 @ToString
 public class RoleDto {
-	
-	private Long productId;
-	private String name;
-	private double price;
-	private Long rating;
-	private Long categoryId;
-	private String images;
 
+	private Long roleId;
+	private String name;
 }
