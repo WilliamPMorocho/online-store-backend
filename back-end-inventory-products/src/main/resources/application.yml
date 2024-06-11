@@ -9,8 +9,6 @@ spring:
     password: ${DB_PASSWORD:root1234} #Actualizar con el valor de tu contraseña de root.
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: create-drop
     defer-datasource-initialization: true
   h2:
     console:

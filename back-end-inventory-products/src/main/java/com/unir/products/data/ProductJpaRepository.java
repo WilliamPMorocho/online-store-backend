@@ -10,10 +10,10 @@ interface ProductJpaRepository extends JpaRepository<Product, Long>, JpaSpecific
 
 	List<Product> findByName(String name);
 
-	List<Product> findByCountry(String country);
+	//List<Product> findByCountry(String country);
 
-	List<Product> findByVisible(Boolean visible);
+	//List<Product> findByVisible(Boolean visible);
 
-	List<Product> findByNameAndCountry(String name, String country);
+	//List<Product> findByNameAndCountry(String name, String country);
 
 }

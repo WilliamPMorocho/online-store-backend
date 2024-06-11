@@ -27,16 +27,20 @@ public class ProductsServiceImpl implements ProductsService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Override
-	public List<Product> getProducts(String name, String country, String description, Boolean visible) {
+	/*@Override
+	public List<Product> getProducts(String name, double price, Long rating) {
 
-		if (StringUtils.hasLength(name) || StringUtils.hasLength(country) || StringUtils.hasLength(description)
-				|| visible != null) {
-			return repository.search(name, country, description, visible);
+		if (StringUtils.hasLength(name)) {
+			return repository.search(name, price, rating);
 		}
 
 		List<Product> products = repository.getProducts();
 		return products.isEmpty() ? null : products;
+	}*/
+
+	@Override
+	public List<Product> getProducts(String name, String country, String description, Boolean visible) {
+		return null;
 	}
 
 	@Override
