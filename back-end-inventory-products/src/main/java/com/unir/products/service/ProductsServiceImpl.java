@@ -65,10 +65,11 @@ public class ProductsServiceImpl implements ProductsService {
 				&& StringUtils.hasLength(request.getDescription().trim())
 				&& StringUtils.hasLength(request.getCountry().trim()) && request.getVisible() != null) {
 
-			Product product = Product.builder().name(request.getName()).description(request.getDescription())
-					.country(request.getCountry()).visible(request.getVisible()).build();
+			//Product product = Product.builder().name(request.getName()).description(request.getDescription())
+			//		.country(request.getCountry()).visible(request.getVisible()).build();
 
-			return repository.save(product);
+			//return repository.save(product);
+			return null;
 		} else {
 			return null;
 		}
