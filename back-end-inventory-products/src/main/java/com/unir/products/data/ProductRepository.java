@@ -32,13 +32,31 @@ public class ProductRepository {
         repository.delete(product);
     }
 
-    public List<Product> search(String name, double price, long rating) {
+    public List<Product> search(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state) {
         SearchCriteria<Product> spec = new SearchCriteria<>();
+
         if (StringUtils.isNotBlank(name)) {
             spec.add(new SearchStatement("name", name, SearchOperation.MATCH));
+        }
+        if (StringUtils.isNotBlank(description)) {
+            spec.add(new SearchStatement("description", description, SearchOperation.MATCH));
+        }
+        if (price != null) {
+            spec.add(new SearchStatement("price", price, SearchOperation.EQUAL));
+        }
+        if (rating != null) {
+            spec.add(new SearchStatement("rating", rating, SearchOperation.EQUAL));
+        }
+        if (categoryId != null) {
+            spec.add(new SearchStatement("category_id", categoryId, SearchOperation.EQUAL));
+        }
+        if (StringUtils.isNotBlank(images)) {
+            spec.add(new SearchStatement("images", images, SearchOperation.MATCH));
+        }
+        if (state != null) {
+            spec.add(new SearchStatement("state", state, SearchOperation.EQUAL));
         }
 
         return repository.findAll(spec);
     }
-
 }

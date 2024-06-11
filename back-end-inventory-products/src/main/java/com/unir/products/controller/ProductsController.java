@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Products Controller", description = "Microservicio encargado de exponer operaciones CRUD sobre productos alojados en una base de datos en memoria.")
+@Tag(name = "Products Controller", description = "Microservicio encargado de exponer operaciones CRUD sobre productos alojados en una base de datos mysql.")
 public class ProductsController {
 
     private final ProductsService service;
@@ -42,21 +42,26 @@ public class ProductsController {
             @RequestHeader Map<String, String> headers,
             @Parameter(name = "name", description = "Nombre del producto. No tiene por que ser exacto", example = "iPhone", required = false)
             @RequestParam(required = false) String name,
-            @Parameter(name = "country", description = "País del producto. Debe ser exacto", example = "ES", required = false)
-            @RequestParam(required = false) String country,
-            @Parameter(name = "description", description = "Descripcion del producto. No tiene por que ser exacta", example = "Estupendo", required = false)
+            @Parameter(name = "description", description = "Descripción del producto. Debe ser exacto", example = "Color rojo", required = false)
             @RequestParam(required = false) String description,
-            @Parameter(name = "visible", description = "Estado del producto. true o false", example = "true", required = false)
-            @RequestParam(required = false) Boolean visible) {
+            @Parameter(name = "price", description = "Precio del producto. No tiene por que ser exacta", example = "0.50", required = false)
+            @RequestParam(required = false) Double price,
+            @Parameter(name = "rating", description = "Calificación del producto. true o false", example = "5", required = false)
+            @RequestParam(required = false) Integer rating,
+            @Parameter(name = "categoryId", description = "Categoria del producto. true o false", example = "1", required = false)
+            @RequestParam(required = false) Integer categoryId,
+            @Parameter(name = "images", description = "Imagenes del producto. true o false", example = "2", required = false)
+            @RequestParam(required = false) String images,
+            @Parameter(name = "state", description = "Estado del producto", example = "1", required = false)
+            @RequestParam(required = false) Integer state) {
 
-        log.info("headers: {}", headers);
-        List<Product> products = service.getProducts(name, country, description, visible);
-
-        if (products != null) {
-            return ResponseEntity.ok(products);
-        } else {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
+            log.info("headers: {}", headers);
+            List<Product> products = service.getProducts(name, description, price, rating, categoryId, images, state );
+            if (products != null) {
+                return ResponseEntity.ok(products);
+            } else {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
     }
 
     @GetMapping("/products/{productId}")
