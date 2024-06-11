@@ -26,29 +26,38 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id", unique = true)
-	private Long productId;
+	private int productId;
 	
 	@Column(name = "name")
 	private String name;
+
+	@Column(name = "description")
+	private String description;
 	
 	@Column(name = "price")
 	private double price ;
 	
 	@Column(name = "rating")
-	private Long rating;
+	private int rating;
 
 	@Column(name = "category_id")
-	private Long categoryId;
+	private int categoryId;
 	
 	@Column(name = "images")
 	private String images;
 
+	@Column(name = "state")
+	private int state;
+
 	public void update(ProductDto productDto) {
+		this.productId = productDto.getProductId();
 		this.name = productDto.getName();
+		this.description = productDto.getDescription();
 		this.price = productDto.getPrice();
 		this.rating = productDto.getRating();
 		this.categoryId = productDto.getCategoryId();
 		this.images = productDto.getImages();
+		this.state = productDto.getState();
 	}
 
 }

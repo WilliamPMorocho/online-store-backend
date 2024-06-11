@@ -34,11 +34,18 @@ public class PlataformUser {
 	@Column(name = "password")
 	private String password ;
 
+	@Column(name = "user_name")
+	private String userName ;
+
+	@Column(name = "state")
+	private Boolean state ;
 
 	public void update(PlataformUserDto plataformUserDto) {
 		this.userId = plataformUserDto.getUserId();
 		this.rolId = plataformUserDto.getRolId();
 		this.password = plataformUserDto.getPassword();
+		this.userName = plataformUserDto.getUserName();
+		this.state = plataformUserDto.getState();
 	}
 
 }

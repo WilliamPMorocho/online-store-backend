@@ -10,8 +10,9 @@ import lombok.*;
 @ToString
 public class PlataformUserDto {
 
-	private long userId;
+	private int userId;
 	private int rolId;
 	private String password ;
-
+	private String userName ;
+	private Boolean state ;
 }

@@ -11,9 +11,9 @@ import lombok.*;
 @ToString
 public class ProductOrderDetailDto {
 
-	private long productOrderDetailId;
-	private long productOrderId;
-	private long productId ;
-	private int productStatus;
+	private int productOrderDetailId;
+	private int productOrderId;
+	private int productId ;
+	private int state;
 
 }

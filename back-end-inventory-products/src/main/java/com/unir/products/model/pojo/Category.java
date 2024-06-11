@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "product")
+@Table(name = "category")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,30 +15,15 @@ public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "product_id", unique = true)
-	private Long productId;
+	@Column(name = "category_id", unique = true)
+	private int categoryId;
 	
 	@Column(name = "name")
 	private String name;
-	
-	@Column(name = "price")
-	private double price ;
-	
-	@Column(name = "rating")
-	private Long rating;
 
-	@Column(name = "category_id")
-	private Long categoryId;
-	
-	@Column(name = "images")
-	private String images;
-
-	public void update(ProductDto productDto) {
-		this.name = productDto.getName();
-		this.price = productDto.getPrice();
-		this.rating = productDto.getRating();
-		this.categoryId = productDto.getCategoryId();
-		this.images = productDto.getImages();
+	public void update(CategoryDto categoryDto) {
+		this.categoryId = categoryDto.getCategoryId();
+		this.name = categoryDto.getName();
 	}
 
 }

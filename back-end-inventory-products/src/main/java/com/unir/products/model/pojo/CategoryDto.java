@@ -1,5 +1,6 @@
 package com.unir.products.model.pojo;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -9,12 +10,7 @@ import lombok.*;
 @Builder
 @ToString
 public class CategoryDto {
-	
-	private Long productId;
-	private String name;
-	private double price;
-	private Long rating;
-	private Long categoryId;
-	private String images;
 
+	private int categoryId;
+	private String name;
 }

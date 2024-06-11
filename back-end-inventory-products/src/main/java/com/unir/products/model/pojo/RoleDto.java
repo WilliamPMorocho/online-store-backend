@@ -10,6 +10,6 @@ import lombok.*;
 @ToString
 public class RoleDto {
 
-	private Long roleId;
+	private int roleId;
 	private String name;
 }

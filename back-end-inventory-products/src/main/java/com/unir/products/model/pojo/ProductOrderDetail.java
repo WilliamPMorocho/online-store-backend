@@ -16,16 +16,16 @@ public class ProductOrderDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_order_detail_id", unique = true)
-	private long productOrderDetailId;
+	private int productOrderDetailId;
 	
 	@Column(name = "product_order_id")
-	private long productOrderId;
+	private int productOrderId;
 	
 	@Column(name = "product_id")
-	private long productId ;
+	private int productId ;
 	
-	@Column(name = "product_status")
-	private int productStatus;
+	@Column(name = "state")
+	private int state;
 
 
 
@@ -33,7 +33,7 @@ public class ProductOrderDetail {
 		this.productOrderDetailId = productOrderDetailDto.getProductOrderDetailId();
 		this.productOrderId = productOrderDetailDto.getProductOrderId();
 		this.productId = productOrderDetailDto.getProductId();
-		this.productStatus = productOrderDetailDto.getProductStatus();
+		this.state = productOrderDetailDto.getState();
 
 	}
 
