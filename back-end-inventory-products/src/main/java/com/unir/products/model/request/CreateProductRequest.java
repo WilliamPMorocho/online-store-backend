@@ -12,7 +12,10 @@ import lombok.Setter;
 public class CreateProductRequest {
 
 	private String name;
-	private String country;
 	private String description;
-	private Boolean visible;
+	private double price ;
+	private int rating;
+	private int categoryId;
+	private String images;
+	private int state;
 }

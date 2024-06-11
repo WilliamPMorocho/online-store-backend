@@ -39,9 +39,20 @@ public class ProductsServiceImpl implements ProductsService {
 	}*/
 
 	@Override
-	public List<Product> getProducts(String name, String country, String description, Boolean visible) {
-		return null;
+	public List<Product> getProducts(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state) {
+		if (StringUtils.hasLength(name) ||
+				StringUtils.hasLength(description) ||
+				price != null ||
+				rating != null ||
+				categoryId != null ||
+				StringUtils.hasLength(images) ||
+				state != null) {
+			return repository.search(name, description, price, rating, categoryId, images, state);
+		}
+		List<Product> products = repository.getProducts();
+		return products.isEmpty() ? null : products;
 	}
+
 
 	@Override
 	public Product getProduct(String productId) {
@@ -64,16 +75,27 @@ public class ProductsServiceImpl implements ProductsService {
 	@Override
 	public Product createProduct(CreateProductRequest request) {
 
-		//Otra opcion: Jakarta Validation: https://www.baeldung.com/java-validation
-		if (request != null && StringUtils.hasLength(request.getName().trim())
-				&& StringUtils.hasLength(request.getDescription().trim())
-				&& StringUtils.hasLength(request.getCountry().trim()) && request.getVisible() != null) {
+		// Otra opcion: Jakarta Validation: https://www.baeldung.com/java-validation
+		if (request != null &&
+				StringUtils.hasLength(request.getName().trim()) &&
+				StringUtils.hasLength(request.getDescription().trim()) &&
+				request.getPrice() > 0 &&
+				request.getRating() >= 0 &&
+				request.getCategoryId() > 0 &&
+				StringUtils.hasLength(request.getImages().trim()) &&
+				request.getState() >= 0) {
 
-			//Product product = Product.builder().name(request.getName()).description(request.getDescription())
-			//		.country(request.getCountry()).visible(request.getVisible()).build();
+			Product product = Product.builder()
+					.name(request.getName())
+					.description(request.getDescription())
+					.price(request.getPrice())
+					.rating(request.getRating())
+					.categoryId(request.getCategoryId())
+					.images(request.getImages())
+					.state(request.getState())
+					.build();
 
-			//return repository.save(product);
-			return null;
+			return repository.save(product);
 		} else {
 			return null;
 		}
