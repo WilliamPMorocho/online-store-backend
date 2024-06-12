@@ -3,7 +3,7 @@ spring:
   application:
     name: ms-inventory-products
   datasource:
-    url: ${DB_URL:jdbc:mysql://database-2.cv6yw88iuljb.us-east-1.rds.amazonaws.com:3306/store_order} #Actualizar con el valor de tu despliegue local de MySQL.
+    url: ${DB_URL:jdbc:mysql://database-2.cv6yw88iuljb.us-east-1.rds.amazonaws.com:3306/store_product} #Actualizar con el valor de tu despliegue local de MySQL.
     driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
     username: ${DB_USER:adm} #Actualizar con el valor de tu usuario.
     password: ${DB_PASSWORD:root1234} #Actualizar con el valor de tu contraseña de root.
