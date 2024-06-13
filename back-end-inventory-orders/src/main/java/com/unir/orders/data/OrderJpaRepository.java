@@ -1,7 +1,16 @@
 package com.unir.orders.data;
 
-import com.unir.orders.model.db.Order;
+import com.unir.orders.model.pojo.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface OrderJpaRepository extends JpaRepository<Order, Long> {
+import java.util.Date;
+import java.util.List;
+
+public interface OrderJpaRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+    List<Order> findByUserId(Integer userId);
+
+    List<Order> findByState(Integer state);
+
+    List<Order> findByDate(Date date);
 }
