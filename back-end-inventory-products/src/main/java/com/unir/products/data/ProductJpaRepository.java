@@ -22,8 +22,6 @@ interface ProductJpaRepository extends JpaRepository<Product, Long>, JpaSpecific
 
 	List<Product> findByState(Integer state);
 
-	List<Product> findByNameAndCountry(String name, String country);
-
 	List<Product> findByNameAndDescription(String name, String description);
 
 	List<Product> findByNameAndPrice(String name, Double price);
