@@ -18,4 +18,5 @@ public class ProductDto {
 	private int categoryId;
 	private String images;
 	private int state;
+	private Integer stock;
 }
