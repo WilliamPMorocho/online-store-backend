@@ -18,4 +18,5 @@ public class CreateProductRequest {
 	private int categoryId;
 	private String images;
 	private int state;
+	private Integer stock;
 }
