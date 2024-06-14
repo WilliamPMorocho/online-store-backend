@@ -57,13 +57,13 @@ public class ProductsController {
             @Parameter(name = "stock", description = "Stock del producto", example = "100", required = false)
             @RequestParam(required = false) Integer stock) {
 
-            log.info("headers: {}", headers);
-            List<Product> products = service.getProducts(name, description, price, rating, categoryId, images, state, stock );
-            if (products != null) {
-                return ResponseEntity.ok(products);
-            } else {
-                return ResponseEntity.ok(Collections.emptyList());
-            }
+        log.info("headers: {}", headers);
+        List<Product> products = service.getProducts(name, description, price, rating, categoryId, images, state, stock);
+        if (products != null) {
+            return ResponseEntity.ok(products);
+        } else {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
     }
 
     @GetMapping("/products/{productId}")
@@ -164,7 +164,7 @@ public class ProductsController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Producto inválido o datos incorrectos introducidos.")
     public ResponseEntity<Product> patchProduct(@PathVariable String productId, @RequestBody String patchBody) {
-
+        System.out.println("Reeeeeeeeeeeeeeeeeeeequest --------------\n\r" + patchBody);
         Product patched = service.updateProduct(productId, patchBody);
         if (patched != null) {
             return ResponseEntity.ok(patched);

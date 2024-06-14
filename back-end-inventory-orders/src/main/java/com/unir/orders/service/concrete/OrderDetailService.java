@@ -1,6 +1,7 @@
 package com.unir.orders.service.concrete;
 
 import com.unir.orders.data.OrderDetailRepository;
+import com.unir.orders.data.OrderRepository;
 import com.unir.orders.facade.ProductsFacade;
 import com.unir.orders.model.Product;
 import com.unir.orders.model.pojo.OrderDetail;
@@ -20,7 +21,7 @@ public class OrderDetailService implements IOrderDetailService {
     private OrderDetailRepository repository;
 
     @Autowired
-    private OrderService orderService;
+    private OrderRepository orderRepository;
 
     @Autowired //Inyeccion por campo (field injection). Es la menos recomendada.
     private ProductsFacade productsFacade;
@@ -50,29 +51,31 @@ public class OrderDetailService implements IOrderDetailService {
                 orderDetailRequest.getState() > 0
         ) {
             OrderDetail orderDetail = new OrderDetail();
-            Product product  =  obtenerProducto(orderDetailRequest.getProductId());
-                if(product !=null){
+            Product product = getProduct(orderDetailRequest.getProductId());
+            if (product != null && product.getStock() > orderDetailRequest.getQuantity()) {
+                int newStock = product.getStock() - orderDetailRequest.getQuantity();
+                Product productUpdated = updateStock(orderDetailRequest.getProductId(), newStock);
+                if (productUpdated != null && productUpdated.getStock() == newStock) {
                     orderDetail.setProductId(product.getProductId());
                     orderDetail.setQuantity(orderDetailRequest.getQuantity());
                     orderDetail.setPrice(orderDetailRequest.getPrice());
                     orderDetail.setState(orderDetailRequest.getState());
-                    orderDetail.setOrder(orderService.getOrderById(orderDetailRequest.getOrderId()));
-                        if(product.getStock()>orderDetail.getQuantity()) {
-                            disminuirStock(orderDetailRequest.getProductId(), (product.getStock() - orderDetail.getQuantity()));
-                        }
+                    orderDetail.setOrder(orderRepository.getById(orderDetailRequest.getOrderId()));
                     return repository.save(orderDetail);
                 }
+
+            }
         }
         return null;
     }
 
-public Product obtenerProducto(Integer producId){
-    return  productsFacade.getProduct(String.valueOf(producId));
-}
+    public Product getProduct(Integer productId) {
+        return productsFacade.getProduct(String.valueOf(productId));
+    }
 
-    public Product disminuirStock(Integer producId,  Integer countStock){
-        String body =  "{\"stock\":"+countStock+"}";
-        return  productsFacade.patchProduct(String.valueOf(producId), body);
+    public Product updateStock(Integer productId, Integer countStock) {
+        String body = "{\"stock\":" + countStock + "}";
+        return productsFacade.patchProduct(String.valueOf(productId), body).block();
     }
 
     @Override
@@ -85,12 +88,29 @@ public Product obtenerProducto(Integer producId){
                 orderDetailRequest.getOrderId() > 0 &&
                 orderDetailRequest.getState() > 0) {
             OrderDetail orderDetail = repository.findById(orderDetailRequest.getId());
-            orderDetail.setProductId(orderDetailRequest.getProductId());
-            orderDetail.setQuantity(orderDetailRequest.getQuantity());
-            orderDetail.setPrice(orderDetailRequest.getPrice());
-            orderDetail.setState(orderDetailRequest.getState());
-            orderDetail.setOrder(orderService.getOrderById(orderDetailRequest.getOrderId()));
-            return repository.save(orderDetail);
+            if (orderDetail != null) {
+                int orderQuantity = orderDetail.getQuantity();
+                int requestQuantity = orderDetailRequest.getQuantity();
+                if (orderQuantity != requestQuantity) {
+                    Product product = getProduct(orderDetailRequest.getProductId());
+                    if (orderQuantity < requestQuantity) {
+                        int newStock = product.getStock() - (requestQuantity - orderQuantity);
+                        if (newStock >= 0) {
+                            updateStock(product.getProductId(), newStock);
+                            orderDetail.setQuantity(requestQuantity);
+                        }
+                    } else {
+                        int newStock = product.getStock() + (orderQuantity - requestQuantity);
+                        updateStock(product.getProductId(), newStock);
+                        orderDetail.setQuantity(requestQuantity);
+                    }
+                }
+                orderDetail.setProductId(orderDetailRequest.getProductId());
+                orderDetail.setPrice(orderDetailRequest.getPrice());
+                orderDetail.setState(orderDetailRequest.getState());
+                orderDetail.setOrder(orderRepository.getById(orderDetailRequest.getOrderId()));
+                return repository.save(orderDetail);
+            }
         }
         return null;
     }
@@ -99,6 +119,9 @@ public Product obtenerProducto(Integer producId){
     public Boolean deleteOrderDetail(Long id) {
         OrderDetail orderDetail = repository.findById(id);
         if (orderDetail != null) {
+            Product product = getProduct(orderDetail.getProductId());
+            int newStock = product.getStock() + orderDetail.getQuantity();
+            updateStock(product.getProductId(), newStock);
             repository.delete(orderDetail);
             return true;
         }

@@ -20,7 +20,8 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private OrderRepository repository;
-
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     @Override
     public List<Order> getOrders() {
@@ -36,6 +37,8 @@ public class OrderService implements IOrderService {
     public Boolean deleteOrder(Long id) {
         Order order = repository.getById(id);
         if (order != null) {
+            for (OrderDetail orderDetail : order.getProducts())
+                orderDetailService.deleteOrderDetail(orderDetail.getId());
             repository.delete(order);
             return Boolean.TRUE;
         }
@@ -62,26 +65,14 @@ public class OrderService implements IOrderService {
             order.setPhone(orderRequest.getPhone());
             order.setTotal(orderRequest.getTotal());
             order.setState(orderRequest.getState());
-
+            order = repository.save(order);
+            Long orderId = order.getId();
             List<OrderDetail> details = orderRequest.getProducts().stream().map(detailRequest -> {
-                if (detailRequest.getProductId() > 0 &&
-                        detailRequest.getState() > 0 &&
-                        detailRequest.getPrice() > 0 &&
-                        detailRequest.getQuantity() > 0) {
-
-                    OrderDetail detail = new OrderDetail();
-                    detail.setProductId(detailRequest.getProductId());
-                    detail.setState(detailRequest.getState());
-                    detail.setPrice(detailRequest.getPrice());
-                    detail.setQuantity(detailRequest.getQuantity());
-                    detail.setOrder(order);
-                    return detail;
-                } else {
-                    return null;
-                }
+                detailRequest.setOrderId(orderId);
+                return orderDetailService.createOrderDetail(detailRequest);
             }).filter(Objects::nonNull).collect(Collectors.toList());
             order.setProducts(details);
-            return repository.save(order);
+            return order;
         } else {
             return null;
         }
