@@ -10,6 +10,8 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +22,9 @@ public class ProductsFacade {
     private String getProductUrl;
 
     private final RestTemplate restTemplate;
-    private final WebClient webClient;
+//    private final WebClient webClient;
+
+    private final WebClient.Builder webClientBuilder;
 
     public Product getProduct(String id) {
 
@@ -41,31 +45,22 @@ public class ProductsFacade {
     }
 
     public Mono<Product> patchProduct(String id, String body) {
-        String url = "http://localhost:8088/products/" + id;
-        return webClient.patch().uri(url)
-                .bodyValue(body)
-                .retrieve()
-                .bodyToMono(Product.class);
+        try {
+            String url = String.format(getProductUrl, id);
+            log.info("Patching product with ID {}. Request to {}", id, url);
+            return webClientBuilder.build()
+                    .patch()
+                    .uri(url)
+                    .body(Mono.just(body), String.class)
+                    .retrieve()
+                    .bodyToMono(Product.class);
+        } catch (WebClientResponseException e) {
+            log.error("Client Error: {}, Product with ID {}", e.getStatusCode(), id);
+            return null;
+        } catch (Exception e) {
+            log.error("Error: {}, Product with ID {}", e.getMessage(), id);
+            return null;
+        }
     }
-
-//    public Product patchProduct(String id, String body) {
-//        try {
-//            String url = String.format(getProductUrl, id);
-//            log.info("Getting product with ID {}. Request to {}", id, url);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.APPLICATION_JSON);
-//            HttpEntity<String> reStringHttpEntity = new HttpEntity<>(body, headers);
-//            return restTemplate.exchange(url, HttpMethod.PATCH, reStringHttpEntity, Product.class).getBody();
-//        } catch (HttpClientErrorException e) {
-//            log.error("Client Error: {}, Product with ID {}", e.getStatusCode(), id);
-//            return null;
-//        } catch (HttpServerErrorException e) {
-//            log.error("Server Error: {}, Product with ID {}", e.getStatusCode(), id);
-//            return null;
-//        } catch (Exception e) {
-//            log.error("Error: {}, Product with ID {}", e.getMessage(), id);
-//            return null;
-//        }
-//    }
 
 }

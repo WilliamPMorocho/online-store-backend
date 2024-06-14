@@ -188,7 +188,7 @@ public class ProductsController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Producto inválido o datos incorrectos introducidos.")
     public ResponseEntity<Product> patchProduct(@PathVariable String productId, @RequestBody String patchBody) {
-        System.out.println("Reeeeeeeeeeeeeeeeeeeequest --------------\n\r" + patchBody);
+        System.out.println("Reeeeeeeeeeeeeeeeeeeequest --------------" + patchBody);
         Product patched = service.updateProduct(productId, patchBody);
         if (patched != null) {
             return ResponseEntity.ok(patched);

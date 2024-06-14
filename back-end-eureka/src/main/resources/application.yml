@@ -10,3 +10,4 @@ eureka:
     hostname: ${EUREKA_HOST:localhost}
   server:
     renewal-percent-threshold: 0.90 #marca como que ya esta caido el servicio que esta registrado
+    renewal-threshold-update-interval-ms: 60000
