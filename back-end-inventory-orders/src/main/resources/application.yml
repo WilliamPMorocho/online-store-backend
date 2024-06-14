@@ -9,8 +9,6 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
-    register-with-eureka: true
-    fetch-registry: true
   instance:
     preferIpAddress: true
     hostname: ms-inventory-orders
@@ -27,9 +25,6 @@ spring:
   jpa:
     show-sql: true
     defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update # Cambiar a 'validate' o 'none' en producción
-      dialect: org.hibernate.dialect.MySQL8Dialect
 #  h2:
 #    console:
 #      enabled: true
@@ -41,5 +36,3 @@ spring:
 getProduct:
   url: http://ms-inventory-products/products/%s
 
-getOrder:
-  url: http://ms-inventory-products/orders/%s

@@ -52,11 +52,13 @@ public class ProductsController {
             @RequestParam(required = false) Integer categoryId,
             @Parameter(name = "images", description = "Imagenes del producto. true o false", example = "2", required = false)
             @RequestParam(required = false) String images,
-            @Parameter(name = "state", description = "Estado del producto", example = "1", required = false)
-            @RequestParam(required = false) Integer state) {
+            @Parameter(name = "state", description = "Imagenes del producto. true o false", example = "2", required = false)
+            @RequestParam(required = false) Integer state,
+            @Parameter(name = "stock", description = "Stock del producto", example = "100", required = false)
+            @RequestParam(required = false) Integer stock) {
 
             log.info("headers: {}", headers);
-            List<Product> products = service.getProducts(name, description, price, rating, categoryId, images, state );
+            List<Product> products = service.getProducts(name, description, price, rating, categoryId, images, state, stock );
             if (products != null) {
                 return ResponseEntity.ok(products);
             } else {

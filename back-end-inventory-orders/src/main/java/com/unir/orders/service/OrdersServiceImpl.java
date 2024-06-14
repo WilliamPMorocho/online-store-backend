@@ -24,7 +24,17 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Order createOrder(OrderRequest request) {
+        List<Product> products = request.getProducts().stream().map(productsFacade::getProduct).filter(Objects::nonNull).toList();
 
+        if(products.size() != request.getProducts().size() || products.stream().anyMatch(product -> !(product.getStock()>0))) {
+            return null;
+        } else {
+
+            //Order order = Order.builder().products(products.stream().map(Product::getProductId).collect(Collectors.toList())).build();
+            //Order order = Order.builder().products(products).build();
+            //repository.save(order);
+            //return order;
+        }
         return null;
     }
 

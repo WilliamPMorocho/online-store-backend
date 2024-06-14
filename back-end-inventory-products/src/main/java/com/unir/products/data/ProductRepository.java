@@ -32,7 +32,7 @@ public class ProductRepository {
         repository.delete(product);
     }
 
-    public List<Product> search(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state) {
+    public List<Product> search(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state, Integer stock) {
         SearchCriteria<Product> spec = new SearchCriteria<>();
 
         if (StringUtils.isNotBlank(name)) {
@@ -42,7 +42,7 @@ public class ProductRepository {
             spec.add(new SearchStatement("description", description, SearchOperation.MATCH));
         }
         if (price != null) {
-            spec.add(new SearchStatement("price", price, SearchOperation.EQUAL));
+            spec.add(new SearchStatement("price", price, SearchOperation.LESS_THAN_EQUAL));
         }
         if (rating != null) {
             spec.add(new SearchStatement("rating", rating, SearchOperation.EQUAL));
@@ -55,6 +55,9 @@ public class ProductRepository {
         }
         if (state != null) {
             spec.add(new SearchStatement("state", state, SearchOperation.EQUAL));
+        }
+        if (stock != null) {
+            spec.add(new SearchStatement("stock", stock, SearchOperation.EQUAL));
         }
 
         return repository.findAll(spec);

@@ -49,6 +49,9 @@ public class Product {
 	@Column(name = "state")
 	private int state;
 
+	@Column(name = "stock")
+	private Integer stock;
+
 	public void update(ProductDto productDto) {
 		this.productId = productDto.getProductId();
 		this.name = productDto.getName();
@@ -58,6 +61,6 @@ public class Product {
 		this.categoryId = productDto.getCategoryId();
 		this.images = productDto.getImages();
 		this.state = productDto.getState();
+		this.stock = productDto.getStock();
 	}
-
 }

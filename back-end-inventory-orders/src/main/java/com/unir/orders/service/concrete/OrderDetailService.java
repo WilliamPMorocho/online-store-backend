@@ -1,6 +1,8 @@
 package com.unir.orders.service.concrete;
 
 import com.unir.orders.data.OrderDetailRepository;
+import com.unir.orders.facade.ProductsFacade;
+import com.unir.orders.model.Product;
 import com.unir.orders.model.pojo.OrderDetail;
 import com.unir.orders.model.request.CreateOrderDetailRequest;
 import com.unir.orders.model.request.UpdateOrderDetailRequest;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderDetailService implements IOrderDetailService {
@@ -18,6 +21,9 @@ public class OrderDetailService implements IOrderDetailService {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired //Inyeccion por campo (field injection). Es la menos recomendada.
+    private ProductsFacade productsFacade;
 
     @Override
     public List<OrderDetail> searchOrderDetails(Long orderId, Long productId) {
@@ -44,14 +50,29 @@ public class OrderDetailService implements IOrderDetailService {
                 orderDetailRequest.getState() > 0
         ) {
             OrderDetail orderDetail = new OrderDetail();
-            orderDetail.setProductId(orderDetailRequest.getProductId());
-            orderDetail.setQuantity(orderDetailRequest.getQuantity());
-            orderDetail.setPrice(orderDetailRequest.getPrice());
-            orderDetail.setState(orderDetailRequest.getState());
-            orderDetail.setOrder(orderService.getOrderById(orderDetailRequest.getOrderId()));
-            return repository.save(orderDetail);
+            Product product  =  obtenerProducto(orderDetailRequest.getProductId());
+                if(product !=null){
+                    orderDetail.setProductId(product.getProductId());
+                    orderDetail.setQuantity(orderDetailRequest.getQuantity());
+                    orderDetail.setPrice(orderDetailRequest.getPrice());
+                    orderDetail.setState(orderDetailRequest.getState());
+                    orderDetail.setOrder(orderService.getOrderById(orderDetailRequest.getOrderId()));
+                        if(product.getStock()>orderDetail.getQuantity()) {
+                            disminuirStock(orderDetailRequest.getProductId(), (product.getStock() - orderDetail.getQuantity()));
+                        }
+                    return repository.save(orderDetail);
+                }
         }
         return null;
+    }
+
+public Product obtenerProducto(Integer producId){
+    return  productsFacade.getProduct(String.valueOf(producId));
+}
+
+    public Product disminuirStock(Integer producId,  Integer countStock){
+        String body =  "{\"stock\":"+countStock+"}";
+        return  productsFacade.patchProduct(String.valueOf(producId), body);
     }
 
     @Override

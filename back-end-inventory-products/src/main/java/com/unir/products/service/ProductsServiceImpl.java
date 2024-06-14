@@ -27,27 +27,18 @@ public class ProductsServiceImpl implements ProductsService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	/*@Override
-	public List<Product> getProducts(String name, double price, Long rating) {
-
-		if (StringUtils.hasLength(name)) {
-			return repository.search(name, price, rating);
-		}
-
-		List<Product> products = repository.getProducts();
-		return products.isEmpty() ? null : products;
-	}*/
 
 	@Override
-	public List<Product> getProducts(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state) {
+	public List<Product> getProducts(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state, Integer stock) {
 		if (StringUtils.hasLength(name) ||
 				StringUtils.hasLength(description) ||
 				price != null ||
 				rating != null ||
 				categoryId != null ||
 				StringUtils.hasLength(images) ||
-				state != null) {
-			return repository.search(name, description, price, rating, categoryId, images, state);
+				state != null ||
+				stock != null) {
+			return repository.search(name, description, price, rating, categoryId, images, state, stock);
 		}
 		List<Product> products = repository.getProducts();
 		return products.isEmpty() ? null : products;
@@ -83,7 +74,8 @@ public class ProductsServiceImpl implements ProductsService {
 				request.getRating() >= 0 &&
 				request.getCategoryId() > 0 &&
 				StringUtils.hasLength(request.getImages().trim()) &&
-				request.getState() >= 0) {
+				request.getState() >= 0 &&
+				request.getStock() >= 0) {
 
 			Product product = Product.builder()
 					.name(request.getName())
@@ -93,6 +85,7 @@ public class ProductsServiceImpl implements ProductsService {
 					.categoryId(request.getCategoryId())
 					.images(request.getImages())
 					.state(request.getState())
+					.stock(request.getStock())
 					.build();
 
 			return repository.save(product);

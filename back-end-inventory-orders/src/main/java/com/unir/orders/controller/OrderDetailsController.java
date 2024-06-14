@@ -29,7 +29,7 @@ import java.util.Objects;
 public class OrderDetailsController {
     private final OrderDetailService service;
 
-    @GetMapping("/order-details/order/{id}")
+    @GetMapping("/order-details/orders/{id}")
     @Operation(
             operationId = "Obtener detalles de una orden",
             description = "Operacion de lectura",
