@@ -46,9 +46,14 @@ public class ProductsServiceImpl implements ProductsService {
 
 
 	@Override
+	public List<Product> getProductsByNameAndDescription(String name, String descripcion) {
+		return repository.getProductsByNameAndDescription(name, descripcion);
+	}
+
 	public Product getProduct(String productId) {
 		return repository.getById(Long.valueOf(productId));
 	}
+
 
 	@Override
 	public Boolean removeProduct(String productId) {

@@ -11,7 +11,9 @@ import com.unir.products.model.request.CreateProductRequest;
 public interface ProductsService {
 	
 	List<Product> getProducts(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state, Integer stock);
-	
+
+	List<Product> getProductsByNameAndDescription(String name, String description);
+
 	Product getProduct(String productId);
 	
 	Boolean removeProduct(String productId);
