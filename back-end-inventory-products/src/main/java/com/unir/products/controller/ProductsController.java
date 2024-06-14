@@ -91,6 +91,30 @@ public class ProductsController {
 
     }
 
+    @GetMapping("/productsByNameAndDescription/{name}/{descripcion}")
+    @Operation(
+            operationId = "Obtener un producto",
+            description = "Operacion de lectura",
+            summary = "Se devuelve un producto a partir de su identificador.")
+    @ApiResponse(
+            responseCode = "200",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+    @ApiResponse(
+            responseCode = "404",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
+            description = "No se ha encontrado el producto con el identificador indicado.")
+    public ResponseEntity<List<Product>> getProductsByNameAndDescripcion(@PathVariable String name, @PathVariable String descripcion) {
+
+        log.info("Request received for product name: {} and description: {}", name, descripcion);
+        List<Product> products = service.getProductsByNameAndDescription(name, descripcion);
+
+        if (!products.isEmpty()) {
+            return ResponseEntity.ok(products);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/products/{productId}")
     @Operation(
             operationId = "Eliminar un producto",

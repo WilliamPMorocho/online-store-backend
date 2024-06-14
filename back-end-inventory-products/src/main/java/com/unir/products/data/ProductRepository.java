@@ -20,6 +20,10 @@ public class ProductRepository {
         return repository.findAll();
     }
 
+    public List<Product> getProductsByNameAndDescription(String name, String description) {
+        return repository.findByNameAndDescription(name, description);
+    }
+
     public Product getById(Long id) {
         return repository.findById(id).orElse(null);
     }
