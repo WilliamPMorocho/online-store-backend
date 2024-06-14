@@ -14,9 +14,13 @@ import lombok.ToString;
 @Builder
 @ToString
 public class Product {
-	private Long id;
+	private int productId;
 	private String name;
-	private String country;
 	private String description;
-	private Boolean visible;
+	private double price ;
+	private int rating;
+	private int categoryId;
+	private String images;
+	private int state;
+	private Integer stock;
 }

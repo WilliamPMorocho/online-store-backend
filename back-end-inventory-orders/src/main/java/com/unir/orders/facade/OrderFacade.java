@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Slf4j
 public class OrderFacade {
-    @Value("${getOrder.url}")
+    @Value("${getProduct.url}")
     private String getOrderUrl;
     private final RestTemplate restTemplate;
 

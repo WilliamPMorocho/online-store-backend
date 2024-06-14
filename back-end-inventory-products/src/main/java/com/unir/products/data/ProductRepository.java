@@ -42,7 +42,7 @@ public class ProductRepository {
             spec.add(new SearchStatement("description", description, SearchOperation.MATCH));
         }
         if (price != null) {
-            spec.add(new SearchStatement("price", price, SearchOperation.EQUAL));
+            spec.add(new SearchStatement("price", price, SearchOperation.LESS_THAN_EQUAL));
         }
         if (rating != null) {
             spec.add(new SearchStatement("rating", rating, SearchOperation.EQUAL));
@@ -57,7 +57,7 @@ public class ProductRepository {
             spec.add(new SearchStatement("state", state, SearchOperation.EQUAL));
         }
         if (stock != null) {
-            spec.add(new SearchStatement("stock", state, SearchOperation.EQUAL));
+            spec.add(new SearchStatement("stock", stock, SearchOperation.EQUAL));
         }
 
         return repository.findAll(spec);

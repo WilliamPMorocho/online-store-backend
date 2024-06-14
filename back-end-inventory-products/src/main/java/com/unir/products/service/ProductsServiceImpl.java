@@ -27,16 +27,6 @@ public class ProductsServiceImpl implements ProductsService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	/*@Override
-	public List<Product> getProducts(String name, double price, Long rating) {
-
-		if (StringUtils.hasLength(name)) {
-			return repository.search(name, price, rating);
-		}
-
-		List<Product> products = repository.getProducts();
-		return products.isEmpty() ? null : products;
-	}*/
 
 	@Override
 	public List<Product> getProducts(String name, String description, Double price, Integer rating, Integer categoryId, String images, Integer state, Integer stock) {
